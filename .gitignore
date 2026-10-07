@@ -1,0 +1,15 @@
+.vs/
+Debug/
+Release/
+x64/
+*.user
+*.suo
+*.sln.docstates
+*.VC.db
+*.opendb
+ipch/
+*.ipch
+*.ilk
+*.pdb
+*.tlog
+*.log
