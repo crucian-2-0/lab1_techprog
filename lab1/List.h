@@ -3,20 +3,20 @@
 
 #include "Queue.h"
 
-//  ласс "—писок" Ч наследник очереди
+//  ласс —писок Ч наследник очереди
 class List : public Queue {
 public:
-    List();
-    List(const List& other);
-    virtual ~List();
+    List(); //пустой конструктор
+    List(const List& other); //конструктор копировани€
+    virtual ~List(); //виртуальный деструктор
 
     // –еализаци€ виртуальных методов
     void add(int value) override; //добавление в конец
     int remove() override; //удаление из начала
-    void print() const override;
-    void save(std::ofstream& out) const override;
-    void load(std::ifstream& in) override;
-    std::string getType() const override;
+    void print() const override; //вывести на экран
+    void save(std::ofstream& out) const override; //сохранить в файл
+    void load(std::ifstream& in) override; //загрузить из файла
+    std::string getType() const override; //вернуть название типа
 
     // ƒополнительные методы списка
     void insertAt(int index, int value); //вставка по индексу
