@@ -1,10 +1,24 @@
 #include "Queue.h"
 
 // РЕАЛИЗАЦИЯ КЛАССА Element
+// Конструктор по умолчанию
+Element::Element() : data(0), prev(nullptr) {
+    std::cout << "+E" << std::endl;
+}
 
-Element::Element(int value, Element* p) : data(value), prev(p) {} //инициализация конструктора
+// Конструктор с параметрами
+Element::Element(int value, Element* p) : data(value), prev(p) {
+    std::cout << "+E" << std::endl;
+}
+
+// Конструктор копирования !!!НЕ используется (нужно для вып. требований)
+Element::Element(const Element& other) : data(other.data), prev(other.prev) {
+    std::cout << "+E(copy)" << std::endl;
+}
+
 Element::~Element() {
     // prev не удаляем — это задача очереди Queue::~Queue()
+    std::cout << "-E" << std::endl;
 }
 
 int Element::getData() const {return data;}
@@ -15,10 +29,19 @@ void Element::setPrev(Element* p) {prev = p;}
 // РЕАЛИЗАЦИЯ КЛАССА Queue
 
 // Конструктор по умолчанию
-Queue::Queue() : head(nullptr), tail(nullptr), count(0) {}
+Queue::Queue() : head(nullptr), tail(nullptr), count(0) {
+    std::cout << "+Q" << std::endl;
+}
+
+// Конструктор с параметром !!!НЕ используется (нужно для вып. требований)
+Queue::Queue(int initialValue) : head(nullptr), tail(nullptr), count(0) {
+    std::cout << "+Q(param)" << std::endl;
+    pushBack(initialValue);
+}
 
 // Конструктор копирования (глубокое копирование)
 Queue::Queue(const Queue& other) : head(nullptr), tail(nullptr), count(0) {
+    std::cout << "+Q(copy)" << std::endl;
     if (!other.isEmpty()) {
         int* values = new int[other.count]; //выделение массива размером с other
         Element* current = other.tail;
@@ -34,7 +57,10 @@ Queue::Queue(const Queue& other) : head(nullptr), tail(nullptr), count(0) {
 }
 
 // Деструктор
-Queue::~Queue() {clear();}
+Queue::~Queue() {
+    std::cout << "-Q" << std::endl;
+    clear();
+}
 
 // Оператор присваивания
 Queue& Queue::operator=(const Queue& other) {
@@ -112,4 +138,61 @@ void Queue::clear() {
     while (!isEmpty()) {
         popFront();
     }
+}
+
+// Получить элемент по индексу
+int Queue::getAt(int index) const {
+    if (index < 0 || index >= count) {
+        throw std::out_of_range("Индекс вне диапазона.");
+    }
+    int* values = new int[count];
+    Element* temp = tail;
+    for (int i = count - 1; i >= 0; i--) {
+        values[i] = temp->getData();
+        temp = temp->getPrev();
+    }
+    int result = values[index];
+    delete[] values;
+    return result;
+}
+
+// Установить значение по индексу
+void Queue::setAt(int index, int value) {
+    if (index < 0 || index >= count) {
+        throw std::out_of_range("Индекс вне диапазона.");
+    }
+    int oldCount = count;
+    int* values = new int[oldCount];
+    Element* current = tail;
+    for (int i = oldCount - 1; i >= 0; i--) {
+        values[i] = current->getData();
+        current = current->getPrev();
+    }
+    values[index] = value;
+    clear();
+    for (int i = 0; i < oldCount; i++) {
+        pushBack(values[i]);
+    }
+    delete[] values;
+}
+
+// Перегрузка оператора вывода
+std::ostream& operator<<(std::ostream& os, const Queue& q) {
+    if (q.isEmpty()) {
+        os << "(пусто)";
+        return os;
+    }
+    int oldCount = q.count;
+    int* values = new int[oldCount];
+    Element* current = q.tail;
+    for (int i = oldCount - 1; i >= 0; i--) {
+        values[i] = current->getData();
+        current = current->getPrev();
+    }
+    for (int i = 0; i < oldCount; i++) {
+        os << values[i];
+        if (i < oldCount - 1) os << " ";
+    }
+    delete[] values;
+    return os;
 }

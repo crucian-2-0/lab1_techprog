@@ -3,10 +3,11 @@
 
 #include "Queue.h"
 
-// Класс "Стек" — наследник очереди
+// Класс Стек — наследник очереди
 class Stack : public Queue {
 public:
     Stack();
+    Stack(int initialValue); //НЕ используется
     Stack(const Stack& other);
     virtual ~Stack();
 
@@ -22,6 +23,8 @@ public:
     void push(int value); //то же, что add
     int pop(); //то же, что remove
     int peek() const; //посмотреть вершину без удаления
+
+    friend std::ostream& operator<<(std::ostream& os, const Stack& s);
 };
 
 #endif

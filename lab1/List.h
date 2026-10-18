@@ -7,6 +7,7 @@
 class List : public Queue {
 public:
     List(); //пустой конструктор
+    List(int initialValue); //с параметром (Ќ≈ используетс€)
     List(const List& other); //конструктор копировани€
     virtual ~List(); //виртуальный деструктор
 
@@ -22,6 +23,10 @@ public:
     void insertAt(int index, int value); //вставка по индексу
     void removeAt(int index); //удаление по индексу
     int getAt(int index) const; //получить элемент по индексу
+    void setAt(int index, int value); //изменить элемент по индексу
+
+    // ѕерегрузка вывода (через базовый оператор)
+    friend std::ostream& operator<<(std::ostream& os, const List& l);
 };
 
 #endif

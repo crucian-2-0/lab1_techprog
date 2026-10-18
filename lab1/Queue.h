@@ -13,7 +13,9 @@ private:
     Element* prev;
 
 public:
-    Element(int value = 0, Element* p = nullptr); //конструктор с параметрами по умолчанию
+    Element(); //пустой конструктор
+    Element(int value, Element* p = nullptr); //с параметрами
+    Element(const Element& other); //копировани€
     ~Element();
 
     int getData() const;
@@ -39,7 +41,8 @@ protected:
 
 public:
     //  онструкторы и деструктор
-    Queue(); //пустой конструктор по умолчанию (создает пустую очередь)
+    Queue(); //пустой конструктор (создает пустую очередь)
+    Queue(int initialValue); //с  параметрами (Ќ≈ используетс€)
     Queue(const Queue& other); //конструктор копировани€
     virtual ~Queue(); //нужен, чтобы при удалении объекта через указатель на Queue вызывались дестукторы наследников
 
@@ -53,6 +56,10 @@ public:
     int getCount() const; //получение количества элементов
     void clear(); //очистка очереди
 
+    // ћетоды дл€ просмотра/установки значений по индексу
+    int getAt(int index) const;
+    void setAt(int idex, int value);
+
     // „исто виртуальные методы (интерфейс дл€ наследников)
     virtual void add(int value) = 0; //добавить элемент
     virtual int remove() = 0; //извлечь элемент
@@ -60,6 +67,9 @@ public:
     virtual void save(std::ofstream& out) const = 0; //сохранить в файл
     virtual void load(std::ifstream& in) = 0; //загрузить из файла
     virtual std::string getType() const = 0; //вернуть название типа
+
+    // ѕерегрузка оператора вывода
+    friend std::ostream& operator<<(std::ostream& os, const Queue& q);
 };
 
 #endif

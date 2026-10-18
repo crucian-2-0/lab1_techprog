@@ -1,10 +1,21 @@
 #include "List.h"
 
-List::List() : Queue() {} //вызов конструктора базового класса
+List::List() : Queue() { //вызов конструктора базового класса
+    std::cout << "+List" << std::endl; 
+} 
 
-List::List(const List& other) : Queue(other) {} //вызов конструктора копировани€
+List::List(int initialValue) : Queue(initialValue) {
+    std::cout << "+List(param)" << std::endl;
+}
 
-List::~List() {} //пуст, потому что вс€ работа делаетс€ в Queue::~Queue()
+List::List(const List& other) : Queue(other) { //вызов конструктора копировани€
+    std::cout << "+List(copy)" << std::endl;
+} 
+
+List::~List() { 
+    //пуст, потому что вс€ работа делаетс€ в Queue::~Queue()
+    std::cout << "-List" << std::endl;
+} 
 
 // ƒобавление в конец
 void List::add(int value) {
@@ -128,20 +139,14 @@ void List::removeAt(int index) {
 }
 
 int List::getAt(int index) const {
-    if (index < 0 || index >= count) {
-        throw std::out_of_range("»ндекс вне диапазона списка.");
-    }
+    return Queue::getAt(index);
+}
 
-    // «десь count не мен€етс€, но на вс€кий случай сохраним
-    int oldCount = count;
+void List::setAt(int index, int value) {
+    Queue::setAt(index, value);
+}
 
-    int* values = new int[oldCount];
-    Element* temp = getTail();
-    for (int i = oldCount - 1; i >= 0; i--) {
-        values[i] = temp->getData();
-        temp = temp->getPrev();
-    }
-    int result = values[index];
-    delete[] values;
-    return result;
+std::ostream& operator<<(std::ostream& os, const List& l) {
+    os << static_cast<const Queue&>(l);
+    return os;
 }

@@ -2,37 +2,29 @@
 #define KEEPER_H
 
 #include "Queue.h"
-#include <vector>
 #include <string>
 
-// Класс "Хранилище" — хранит указатели на объекты Queue
+// Класс Хранилище — хранит указатели на объекты Queue
 class Keeper {
 private:
-    std::vector<Queue*> containers;  //массив указателей на Base (Queue)
+    Queue** containers; //динамический массив указателей
+    int size; //текущее количество контейнеров
+    int capacity; //вместимость массива
+
+    void resize(); //расширение массива при необходимости
 
 public:
     Keeper();
+    Keeper(int initialCapacity); //НЕ используется (нужно для вып. требований)
+    Keeper(const Keeper& other); //НЕ используется (нужно для вып. требований)
     ~Keeper();
 
-    // Добавление контейнера по типу (1 - List, 2 - Deque, 3 - Stack)
     void addContainer(int type);
-
-    // Удаление контейнера по индексу
     void removeContainer(int index);
-
-    // Вывод всех контейнеров
     void printAll() const;
-
-    // Получить количество контейнеров
     int getCount() const;
-
-    // Получить контейнер по индексу
     Queue* getContainer(int index) const;
-
-    // Сохранение всех контейнеров в файл
     void saveToFile(const std::string& filename) const;
-
-    // Загрузка всех контейнеров из файла
     void loadFromFile(const std::string& filename);
 };
 
